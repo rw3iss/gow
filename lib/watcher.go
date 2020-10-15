@@ -2,7 +2,9 @@ package lib
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -11,10 +13,10 @@ var server *exec.Cmd
 var changedFilename string
 
 func restartApp() {
-	fmt.Print("Restarting (" + changedFilename + ") ...")
+	fmt.Print(ColorYellow + "Rebuilding (" + changedFilename + ") ... " + ColorReset)
 
 	// Stop (we can stop in a separate thread)
-	go StopServer(server)
+	StopServer(server)
 
 	// Rebuild
 	_ = DoBuild()
@@ -45,7 +47,7 @@ func StartWatcher() {
 				//log.Println("event:", event)
 				if event.Op&fsnotify.Write == fsnotify.Write {
 					changedFilename = event.Name
-					go restartApp()
+					restartApp()
 				}
 			case err, ok := <-watcher.Errors:
 				if !ok {
@@ -56,6 +58,16 @@ func StartWatcher() {
 		}
 	}()
 
+	// watch the current directory the command was run in
+	watchDir := "./"
+
+	err = recurseWatchDirs(watcher, watchDir)
+	if err != nil {
+		return
+	}
+
+	fmt.Printf("\n"+ColorNotice+"Watching: %s"+ColorReset+"\n", watchDir)
+
 	// start the command server
 	server, err = StartServer()
 	if err != nil {
@@ -63,15 +75,27 @@ func StartWatcher() {
 		return
 	}
 
-	// watch the current directory the command was run in
-	watchDir := "./"
-	err = watcher.Add(watchDir)
+	<-done
+}
+
+func recurseWatchDirs(watcher *fsnotify.Watcher, dir string) error {
+	err := filepath.Walk(dir,
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				fmt.Printf("Error reading file: %s", err.Error())
+				return err
+			}
+			if info.IsDir() {
+				//fmt.Printf("Watching: %s\n", path)
+				watcher.Add(path)
+			}
+			return nil
+		})
+
 	if err != nil {
 		fmt.Print(err.Error())
-		return
+		return err
 	}
 
-	fmt.Printf("Watching: %s\n\n", watchDir)
-
-	<-done
+	return nil
 }

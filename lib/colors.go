@@ -1,12 +1,15 @@
 package lib
 
-var Reset = "\033[0m"
-var Red = "\033[31m"
-var HiRed = "\033[41m"
-var Green = "\033[32m"
-var Yellow = "\033[33m"
-var Blue = "\033[34m"
-var Purple = "\033[35m"
-var Cyan = "\033[36m"
-var Gray = "\033[37m"
-var White = "\033[97m"
+var ColorReset = "\033[0m"
+var ColorRed = "\033[1;31m"
+var ColorHiRed = "\033[1;41m"
+var ColorGreen = "\033[1;32m"
+var ColorYellow = "\033[1;33m"
+var ColorBlue = "\033[1;34m"
+var ColorPurple = "\033[1;35m"
+var ColorCyan = "\033[1;36m"
+var ColorGray = "\033[1;37m"
+var ColorWhite = "\033[1;97m"
+
+var ColorNotice = ColorWhite
+var ColorError = ColorRed

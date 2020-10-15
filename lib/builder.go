@@ -8,30 +8,15 @@ import (
 	"time"
 )
 
-type CustomWriter struct {
-}
-
-func (cw *CustomWriter) Write(b []byte) (int, error) {
-	fmt.Println("CustomWriter.Write")
-	return 0, nil
-}
-
 // DoBuild - Executes the 'go build' command and records time.
 func DoBuild() error {
 	start := time.Now()
 
 	cmd := exec.Command("go", "build")
 	cmd.Stdout = os.Stdout
-
-	var errorWriter = &CustomWriter{}
-
-	cmd.Stderr = errorWriter //os.Stderr
-
-	fmt.Println(HiRed)
+	cmd.Stderr = &ErrorWriter{} //os.Stderr
 
 	e := cmd.Run()
-
-	fmt.Println(Reset)
 
 	if e != nil {
 		//fmt.Printf("\nError in build: %s", e)
@@ -45,7 +30,7 @@ func DoBuild() error {
 	// 	return err
 	// }
 
-	fmt.Println("Built in " + ms + " ms.\n")
+	fmt.Print("Built in " + ms + " ms. ")
 
 	return nil
 }

@@ -11,12 +11,17 @@ func main() {
 }
 
 func run() {
-	fmt.Println("\nInitial build...")
+	// try to read in Config values
+	// var config, _ = lib.NewConfig("config.json")
+	// if (config.Get()) {
+	// }
+
+	fmt.Print(lib.ColorNotice + "\nInitial build... " + lib.ColorReset)
 	err := lib.DoBuild()
 
 	if err != nil {
-		// todo: read config, if should attempt restart on error...
-		fmt.Println(lib.Red + "Build error... starting watcher anyway..." + lib.Reset)
+		// continue to watch even with build errors...
+		//fmt.Println(lib.ResetColor + "Starting watcher..." + lib.ResetColor + "\n")
 	}
 
 	lib.StartWatcher()
