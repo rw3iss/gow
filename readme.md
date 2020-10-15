@@ -1,6 +1,12 @@
 ## To install:
 ```
-go build
+go get github.com/rw3iss/gow
+```
+
+### Or from source:
+```
+git clone https://github.com/rw3iss/gow.git
+cd gow
 go install
 ```
 
