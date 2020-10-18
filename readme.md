@@ -31,4 +31,3 @@ Will watch all files in the current directory, recursively, and run 'go build' w
 
  - lib/Colors.go - Color definitions.
  - lib/Log.go - Helper to print outputs.
- - lib/Config.go 
