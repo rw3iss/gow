@@ -1,3 +1,9 @@
+## What this is:
+
+- Automatic Go file watcher/builder, barebones (fast), cross-platform (uses fsnotify), and also recursive with configuration.
+- Organized architecture, as an experimental project for learning Go.
+
+
 ## To install:
 ```
 go get github.com/rw3iss/gow

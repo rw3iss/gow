@@ -29,20 +29,16 @@ func (app *Application) Start() {
 
 	if err != nil {
 		// continue to watch even with build errors...
-		//fmt.Println(lib.ResetColor + "Starting watcher..." + lib.ResetColor + "\n")
 	}
 
 	app.Watcher.Start()
 }
 
 func (app *Application) Restart() {
-	// Stop
 	app.Server.Stop()
 
-	// Rebuild
 	fmt.Print(utils.ColorYellow + "Rebuilding (" + changedFilename + ") ... " + utils.ColorReset)
 	app.Builder.Build()
 
-	// Restart
 	app.Server.Start()
 }
