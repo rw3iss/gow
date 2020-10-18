@@ -40,5 +40,5 @@ Will watch all files in the current directory, recursively, and run 'go build' w
 
  ## Todo
  - implement Config to accept a custom 'go build' command.
- - implement Config to accept a custom runtime command (current just runs the package/folder name as the executable).
- uns  - implement Config to specify a regex of file extensions to react to.
+ - implement Config to accept a custom runtime command (currently just runs the package/folder name as the executable).
+ - implement Config to specify a regex of file extensions to react to.
