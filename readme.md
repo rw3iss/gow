@@ -1,6 +1,6 @@
 ## What this is:
 
-- Automatic Go file watcher, builder, and runner. Barebones (fast), cross-platform (uses fsnotify), recursive, and configurable .
+- Go file watcher, builder, and runner. Barebones (fast), cross-platform (uses fsnotify), recursive, and configurable.
 - Organized architecture, as an experimental project for learning Go.
 
 
