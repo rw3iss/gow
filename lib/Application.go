@@ -6,7 +6,7 @@ import (
 
 // Application just wraps all the parts, central bus.
 type Application struct {
-	Config  *Config
+	Config  *utils.Config
 	Builder *Builder
 	Runner  *Runner
 	Watcher *Watcher
@@ -14,7 +14,7 @@ type Application struct {
 
 func NewApplication() *Application {
 	app := &Application{}
-	app.Config, _ = NewConfig("config.json")
+	app.Config, _ = utils.NewConfig("config.json")
 	app.Builder = NewBuilder(app)
 	app.Runner = NewRunner(app)
 	app.Watcher = NewWatcher(app)

@@ -1,1 +1,14 @@
-{ "Todo": "You do" }
+{ 
+    "Todo": "You do",
+
+    "watchDir": "./",
+
+    "restartOnError": true,
+
+    "buildCommand": "go build",
+
+    "runCommand": "go run test.go",
+
+    "goLocation": "/usr/local/go"
+
+}

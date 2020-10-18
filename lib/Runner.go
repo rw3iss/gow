@@ -30,17 +30,18 @@ func (r *Runner) Start() error {
 	}
 
 	// Todo: get executable command from config, or use default executable/cwd
-	var _ = r.app.Config.Get("command", "")
-
 	mainExecutable := filepath.Base(cwd)
-	cmd := exec.Command("./" + mainExecutable)
+	var runCommand = r.app.Config.Get("runCommand", "./"+mainExecutable)
+	utils.Log("See run command: %s", runCommand)
+
+	cmd := exec.Command(runCommand)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset)
 
 	err = cmd.Start()
 
 	if err != nil {
-		utils.Log(utils.ColorError+"Error starting command server: %s\n"+utils.ColorReset, err)
+		utils.Log(utils.ColorError+"Error running: %s\n"+utils.ColorReset, err)
 		return err
 	} else {
 		utils.Log(utils.ColorGreen + "Starting..." + utils.ColorReset + "\n")

@@ -1,0 +1,12 @@
+{ 
+    "Todo": "You do",
+
+    "watchDir": "./",
+
+    "restartOnError": true,
+
+    "buildCommand": "/usr/local/bin/go build",
+
+    "runCommand": "go run test.go"
+
+}
