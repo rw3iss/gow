@@ -1,8 +1,6 @@
 package lib
 
 import (
-	"fmt"
-
 	"github.com/rw3iss/gow/lib/utils"
 )
 
@@ -24,7 +22,7 @@ func NewApplication() *Application {
 }
 
 func (app *Application) Start() {
-	fmt.Print(utils.ColorNotice + "\nInitial build... " + utils.ColorReset)
+	utils.Log(utils.ColorNotice + "\nInitial build... " + utils.ColorReset)
 	err := app.Builder.Build()
 
 	if err != nil {
@@ -37,7 +35,7 @@ func (app *Application) Start() {
 func (app *Application) Restart() {
 	app.Runner.Stop()
 
-	fmt.Print(utils.ColorYellow + "Rebuilding (" + changedFilename + ") ... " + utils.ColorReset)
+	utils.Log(utils.ColorYellow + "Rebuilding (" + changedFilename + ") ... " + utils.ColorReset)
 	app.Builder.Build()
 
 	app.Runner.Start()

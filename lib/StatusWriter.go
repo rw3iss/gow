@@ -1,8 +1,9 @@
 package lib
 
 import (
-	"fmt"
 	"io"
+
+	"github.com/rw3iss/gow/lib/utils"
 )
 
 type StatusWriter struct {
@@ -10,7 +11,7 @@ type StatusWriter struct {
 }
 
 func (w *StatusWriter) Write(b []byte) (int, error) {
-	fmt.Printf(w.formatString, b)
+	utils.Log(w.formatString, b)
 	return 0, nil
 }
 

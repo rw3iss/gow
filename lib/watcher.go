@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -26,7 +25,7 @@ func NewWatcher(app *Application) *Watcher {
 func (w *Watcher) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		fmt.Printf(err.Error())
+		utils.Log(err.Error())
 		return
 	}
 	defer watcher.Close()
@@ -50,22 +49,22 @@ func (w *Watcher) Start() {
 				if !ok {
 					return
 				}
-				fmt.Printf("Watcher error: %s", err.Error())
+				utils.Log("Watcher error: %s", err.Error())
 			}
 		}
 	}()
 
 	// watch the current directory the command was run in
+	// Todo: read watch dir from Config
 	watchDir := "./"
-
 	err = recurseWatchDirs(watcher, watchDir)
 	if err != nil {
 		return
 	}
 
-	fmt.Printf("\n"+utils.ColorNotice+"Watching: %s"+utils.ColorReset+"\n", watchDir)
+	utils.Log("\n"+utils.ColorNotice+"Watching: %s"+utils.ColorReset+"\n", watchDir)
 
-	// start the target Runner
+	// start the target executable
 	w.app.Runner.Start()
 
 	<-done
@@ -75,18 +74,17 @@ func recurseWatchDirs(watcher *fsnotify.Watcher, dir string) error {
 	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
-				fmt.Printf("Error reading file: %s", err.Error())
+				utils.Log("Error reading file: %s", err.Error())
 				return err
 			}
 			if info.IsDir() {
-				//fmt.Printf("Watching: %s\n", path)
 				watcher.Add(path)
 			}
 			return nil
 		})
 
 	if err != nil {
-		fmt.Print(err.Error())
+		utils.Log(err.Error())
 		return err
 	}
 

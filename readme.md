@@ -39,6 +39,8 @@ Will watch all files in the current directory, recursively, and run 'go build' w
  - lib/Log.go - Helper to print outputs.
 
  ## Todo
+ - implement Config to accept a custom 'watchDir'.
  - implement Config to accept a custom 'go build' command.
- - implement Config to accept a custom runtime command (currently just runs the package/folder name as the executable).
+ - implement Config to accept a custom Runner command (currently just runs the package/folder name as the executable).
  - implement Config to specify a regex of file extensions to react to.
+ - Update Config to parse incoming key indexes with recursive ability through period notation, ie. Get("Some.Child.Key").s

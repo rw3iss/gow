@@ -45,16 +45,12 @@ func NewConfig(filename string) (*Config, error) {
 	for k, v := range config.db {
 		switch v.(type) {
 		case string:
-			//fmt.Printf("Item %q is a string, containing %q\n", k, c)
 			config.db[k] = v.(string)
 		case bool:
-			//fmt.Printf("Item %q is a bool, containing %t\n", k, c)
 			config.db[k] = v.(bool)
 		case int:
-			//fmt.Printf("Looks like item %q is a number, specifically %f\n", k, c)
 			config.db[k] = v.(int)
 		case float64:
-			//fmt.Printf("Looks like item %q is a number, specifically %f\n", k, c)
 			config.db[k] = v.(float64)
 		default:
 			config.db[k] = JsonMap(v.(map[string]interface{}))

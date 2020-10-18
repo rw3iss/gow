@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
@@ -31,18 +30,13 @@ func (b *Builder) Build() error {
 	e := cmd.Run()
 
 	if e != nil {
-		//fmt.Printf("\nError in build: %s", e)
 		return e
 	}
 
 	duration := time.Since(start)
 	ms := strconv.Itoa(int(duration.Nanoseconds() / int64(1000000)))
 
-	// if err != nil {
-	// 	return err
-	// }
-
-	fmt.Print("Built in " + ms + " ms. ")
+	utils.Log("Built in " + ms + " ms. ")
 
 	return nil
 }
