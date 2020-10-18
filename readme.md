@@ -43,4 +43,4 @@ Will watch all files in the current directory, recursively, and run 'go build' w
  - implement Config to accept a custom 'go build' command.
  - implement Config to accept a custom Runner command (currently just runs the package/folder name as the executable).
  - implement Config to specify a regex of file extensions to react to.
- - Update Config to parse incoming key indexes with recursive ability through period notation, ie. Get("Some.Child.Key").s
+ - Update Config to parse incoming key indexes with recursive ability through period notation, ie. Get("Some.Child.Key").

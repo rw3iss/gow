@@ -39,8 +39,7 @@ func (w *Watcher) Start() {
 				}
 				//log.Println("event:", event)
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					w.app.lastChangedFilename = event.Name
-					w.app.Restart()
+					w.app.Restart(event.Name)
 				}
 			case err, ok := <-watcher.Errors:
 				if !ok {
