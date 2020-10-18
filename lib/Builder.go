@@ -25,7 +25,7 @@ func (b *Builder) Build() error {
 
 	cmd := exec.Command("go", "build")
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = NewWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset) //os.Stderr
+	cmd.Stderr = utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset) //os.Stderr
 
 	e := cmd.Run()
 

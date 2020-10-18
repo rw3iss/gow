@@ -35,7 +35,7 @@ func (r *Runner) Start() error {
 	mainExecutable := filepath.Base(cwd)
 	cmd := exec.Command("./" + mainExecutable)
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = NewWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset)
+	cmd.Stderr = utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset)
 
 	err = cmd.Start()
 

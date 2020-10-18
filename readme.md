@@ -26,16 +26,16 @@ Will watch all files in the current directory, recursively, and run 'go build' w
 
 ## File structure / explanation:
 ```
-main.go             - Simple entry point, runs initial build and starts watcher.
-lib/                - The underlying application library.
-    Watcher.go      - Manages the process of watching for file changes, and runs restart routine.
-    Builder.go      - Manages the process of running 'go build'.
-    Runner.go       - Manages the process of running the the actual target executable/project. 
-    Config.go       - Helper to read in Config file.
-    StatusWriter.go - A generic Writer which accepts a format string and will print a formatted output.
-    utils/          - Library utilites.
-        Colors.go   - Color definitions.
-        Log.go      - Helper to print outputs.
+main.go                 - Entry point, runs initial build and starts watcher.
+lib/                    - (Underlying application library)
+    Watcher.go          - Manages process of watching files, and restart routine.
+    Builder.go          - Manages process of running build command.
+    Runner.go           - Manages process of running actual target executable. 
+    Config.go           - Helper to read in configuration file.
+    utils/              - (Library utilites)
+        Colors.go       - Color definitions.
+        FormatWriter.go - Generic Writer, accepts format string and prints output.
+        Log.go          - Helper to print outputs.
 ```
 
  ## Todo
