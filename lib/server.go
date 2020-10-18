@@ -37,7 +37,16 @@ func (s *Server) Start() error {
 	//fmt.Println("Starting... " + mainExecutable)
 	cmd := exec.Command("./" + mainExecutable)
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = &ErrorWriter{}
+	cmd.Stderr = NewWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset)
+
+	//&Writer{}
+
+	// 	&struct{
+	// 	Write *func
+	// }{
+	// 	Write: func() {},
+	// }
+
 	err = cmd.Start()
 
 	if err != nil {

@@ -6,6 +6,8 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
+
+	"github.com/rw3iss/gow/lib/utils"
 )
 
 type Builder struct {
@@ -24,7 +26,7 @@ func (b *Builder) Build() error {
 
 	cmd := exec.Command("go", "build")
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = &ErrorWriter{} //os.Stderr
+	cmd.Stderr = NewWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset) //os.Stderr
 
 	e := cmd.Run()
 

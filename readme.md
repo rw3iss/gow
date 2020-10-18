@@ -24,9 +24,11 @@ Will watch all files in the current directory, recursively, and run 'go build' w
  - lib/Builder.go - Manages the process of running 'go build'.
  - lib/Watcher.go - Manages the process of watching for file changes, and runs restart routine.
  - lib/Server.go  - Manages the process of running the the actual target executable/project. 
+ - lib/Config.go  - Helper to read in Config file.
+ - lib/StatusWriter.go - A generic Writer which accepts a format string and will print a formatted output.
 
  ### Utilities:
 
  - lib/Colors.go - Color definitions.
  - lib/Log.go - Helper to print outputs.
- - lib/Config.go - Helper to read in Config file.
+ - lib/Config.go 

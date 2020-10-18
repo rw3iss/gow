@@ -13,3 +13,4 @@ var ColorWhite = "\033[1;97m"
 
 var ColorNotice = ColorWhite
 var ColorError = ColorRed
+var ColorSuccess = ColorGreen
