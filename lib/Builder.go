@@ -19,7 +19,7 @@ func NewBuilder(app *Application) *Builder {
 	}
 }
 
-// DoBuild - Executes the 'go build' command and records time.
+// Build - Executes the 'go build' command and records time.
 func (b *Builder) Build() error {
 	start := time.Now()
 

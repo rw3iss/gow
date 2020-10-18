@@ -12,16 +12,13 @@ type Watcher struct {
 	app *Application
 }
 
-//var server *exec.Cmd
-var changedFilename string
-
 func NewWatcher(app *Application) *Watcher {
 	return &Watcher{
 		app: app,
 	}
 }
 
-// StartWatcher - Starts the watching of the diretory and notifies iof changes
+// Start - Starts the watching of the diretory and notifies iof changes
 func (w *Watcher) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -42,7 +39,7 @@ func (w *Watcher) Start() {
 				}
 				//log.Println("event:", event)
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					changedFilename = event.Name
+					w.app.lastChangedFilename = event.Name
 					w.app.Restart()
 				}
 			case err, ok := <-watcher.Errors:

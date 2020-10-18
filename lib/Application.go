@@ -6,10 +6,11 @@ import (
 
 // Application just wraps all the parts, central bus.
 type Application struct {
-	Config  *Config
-	Builder *Builder
-	Runner  *Runner
-	Watcher *Watcher
+	Config              *Config
+	Builder             *Builder
+	Runner              *Runner
+	Watcher             *Watcher
+	lastChangedFilename string // so we can pass from Watcher to Builder
 }
 
 func NewApplication() *Application {
@@ -35,7 +36,7 @@ func (app *Application) Start() {
 func (app *Application) Restart() {
 	app.Runner.Stop()
 
-	utils.Log(utils.ColorYellow + "Rebuilding (" + changedFilename + ") ... " + utils.ColorReset)
+	utils.Log(utils.ColorYellow + "Rebuilding (" + app.lastChangedFilename + ") ... " + utils.ColorReset)
 	app.Builder.Build()
 
 	app.Runner.Start()
