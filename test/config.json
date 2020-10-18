@@ -5,8 +5,8 @@
 
     "restartOnError": true,
 
-    "buildCommand": "/usr/local/bin/go build",
+    "buildCommand": ["go", "build"],
 
-    "runCommand": "go run test.go"
+    "runCommand": ["go", "run test.go"]
 
 }

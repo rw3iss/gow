@@ -8,37 +8,34 @@ import (
 	"github.com/rw3iss/gow/lib/utils"
 )
 
-// Runner handles managing the command which runs the underlying project's executable (ie. main module program).
-
+// Runner handles managing the command which runs the underlying project's executable (ie. the main module program).
 type Runner struct {
-	app *Application
-	cmd *exec.Cmd // underlying server context
+	app         *Application
+	cmd         *exec.Cmd // underlying server context
+	runCommand  []interface{}
+	errorWriter *utils.FormatWriter
 }
 
 func NewRunner(app *Application) *Runner {
-	return &Runner{
-		app: app,
+	// use current working directory name as executable module name
+	if cwd, err := os.Getwd(); err == nil {
+		return &Runner{
+			app:         app,
+			runCommand:  app.Config.GetArray("runCommand", "./"+filepath.Base(cwd)),
+			errorWriter: utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset),
+		}
 	}
+
+	return nil
 }
 
-// Start - starts the Runner
+// Start starts the Runner
 func (r *Runner) Start() error {
-	cwd, err := os.Getwd()
-
-	if err != nil {
-		return err
-	}
-
-	// Todo: get executable command from config, or use default executable/cwd
-	mainExecutable := filepath.Base(cwd)
-	var runCommand = r.app.Config.Get("runCommand", "./"+mainExecutable)
-	utils.Log("See run command: %s", runCommand)
-
-	cmd := exec.Command(runCommand)
+	cmd := exec.Command(string(r.runCommand[0].(string)), string(r.runCommand[1].(string)))
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset)
+	cmd.Stderr = r.errorWriter
 
-	err = cmd.Start()
+	err := cmd.Start()
 
 	if err != nil {
 		utils.Log(utils.ColorError+"Error running: %s\n"+utils.ColorReset, err)
@@ -52,7 +49,7 @@ func (r *Runner) Start() error {
 	return nil
 }
 
-// Stop - stops the Runner
+// Stop stops the Runner
 func (r *Runner) Stop() error {
 	// Server already stopped?
 	if r.cmd == nil || r.cmd.Process == nil {

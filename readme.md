@@ -30,12 +30,13 @@ Will watch all files in the current directory, recursively, and run 'go build' w
 ```
 main.go                 - Entry point, runs initial build and starts watcher.
 lib/                    - (Underlying application library)
-    Watcher.go          - Manages process of watching files, and restart routine.
+    Application.go      - Wrapping context for entire Application.
     Builder.go          - Manages process of running build command.
     Runner.go           - Manages process of running actual target executable. 
-    Config.go           - Helper to read in configuration file.
+    Watcher.go          - Manages process of watching files, and restart routine.
     utils/              - (Library utilites)
         Colors.go       - Color definitions.
+        Config.go       - Helper to read in configuration file.
         FormatWriter.go - Generic Writer, accepts format string and prints output.
         Log.go          - Helper to print outputs.
 test/                   - (Test package, run 'gow' here and it will run test.go)

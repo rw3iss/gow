@@ -18,7 +18,7 @@ func NewWatcher(app *Application) *Watcher {
 	}
 }
 
-// Start - Starts the watching of the diretory and notifies iof changes
+// Start starts the watching of the diretory and notifies iof changes
 func (w *Watcher) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -50,9 +50,13 @@ func (w *Watcher) Start() {
 		}
 	}()
 
-	// watch the current directory the command was run in
-	// Todo: read watch dir from Config
-	watchDir := "./"
+	// watch the target or current directory:
+	watchDir := w.app.Config.Get("watchDir", "./")
+
+	if _, err := os.Stat(watchDir); os.IsNotExist(err) {
+		panic("\nConfigured watchDir directory does not exist: " + watchDir)
+	}
+
 	err = recurseWatchDirs(watcher, watchDir)
 	if err != nil {
 		return
@@ -66,6 +70,7 @@ func (w *Watcher) Start() {
 	<-done
 }
 
+// helpers to add all subdirectories to the watcher
 func recurseWatchDirs(watcher *fsnotify.Watcher, dir string) error {
 	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {

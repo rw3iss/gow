@@ -12,14 +12,14 @@ import (
 type Builder struct {
 	app          *Application
 	errorWriter  *utils.FormatWriter
-	buildCommand string
+	buildCommand []interface{}
 }
 
 func NewBuilder(app *Application) *Builder {
 	return &Builder{
 		app:          app,
 		errorWriter:  utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset),
-		buildCommand: app.Config.Get("buildCommand", "go build"),
+		buildCommand: app.Config.GetArray("buildCommand", "build"),
 	}
 }
 
@@ -27,13 +27,7 @@ func NewBuilder(app *Application) *Builder {
 func (b *Builder) Build() error {
 	start := time.Now()
 
-	utils.Log("Path...")
-	cmd := exec.Command("echo $PATH")
-	cmd.Stdout = b.errorWriter
-	cmd.Stderr = b.errorWriter
-	cmd.Run()
-
-	cmd = exec.Command(b.buildCommand)
+	cmd := exec.Command(string(b.buildCommand[0].(string)), string(b.buildCommand[1].(string)))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = b.errorWriter
 
