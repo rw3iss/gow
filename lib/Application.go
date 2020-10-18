@@ -10,7 +10,7 @@ import (
 type Application struct {
 	Config  *Config
 	Builder *Builder
-	Server  *Server
+	Runner  *Runner
 	Watcher *Watcher
 }
 
@@ -18,7 +18,7 @@ func NewApplication() *Application {
 	app := &Application{}
 	app.Config, _ = NewConfig("config.json")
 	app.Builder = NewBuilder(app)
-	app.Server = NewServer(app)
+	app.Runner = NewRunner(app)
 	app.Watcher = NewWatcher(app)
 	return app
 }
@@ -35,10 +35,10 @@ func (app *Application) Start() {
 }
 
 func (app *Application) Restart() {
-	app.Server.Stop()
+	app.Runner.Stop()
 
 	fmt.Print(utils.ColorYellow + "Rebuilding (" + changedFilename + ") ... " + utils.ColorReset)
 	app.Builder.Build()
 
-	app.Server.Start()
+	app.Runner.Start()
 }

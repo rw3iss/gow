@@ -65,14 +65,8 @@ func (w *Watcher) Start() {
 
 	fmt.Printf("\n"+utils.ColorNotice+"Watching: %s"+utils.ColorReset+"\n", watchDir)
 
-	// start the command server
-	w.app.Server.Start()
-
-	// server, err = StartServer()
-	// if err != nil {
-	// 	fmt.Print(err)
-	// 	return
-	// }
+	// start the target Runner
+	w.app.Runner.Start()
 
 	<-done
 }

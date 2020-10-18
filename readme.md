@@ -1,6 +1,6 @@
 ## What this is:
 
-- Automatic Go file watcher/builder, barebones (fast), cross-platform (uses fsnotify), and also recursive with configuration.
+- Automatic Go file watcher, builder, and runner, barebones (fast), cross-platform (uses fsnotify), and also recursive with configuration.
 - Organized architecture, as an experimental project for learning Go.
 
 
@@ -39,5 +39,6 @@ Will watch all files in the current directory, recursively, and run 'go build' w
  - lib/Log.go - Helper to print outputs.
 
  ## Todo
- - implement Config to accept custom 'go build' command.
- - implement Config to specify a regex of file extensions to react to.
+ - implement Config to accept a custom 'go build' command.
+ - implement Config to accept a custom runtime command (current just runs the package/folder name as the executable).
+ uns  - implement Config to specify a regex of file extensions to react to.
