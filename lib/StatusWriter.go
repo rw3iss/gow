@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"io"
 )
 
 type StatusWriter struct {
@@ -13,7 +14,7 @@ func (w *StatusWriter) Write(b []byte) (int, error) {
 	return 0, nil
 }
 
-func NewWriter(formatStr string) interface{ Write(b []byte) (int, error) } {
+func NewWriter(formatStr string) io.Writer {
 	return &StatusWriter{
 		formatString: formatStr,
 	}
