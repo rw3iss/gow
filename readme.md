@@ -29,7 +29,7 @@ Will watch all files in the current directory, recursively, and run 'go build' w
  - main.go - Simple entry point, runs initial build and starts watcher.
  - lib/Builder.go - Manages the process of running 'go build'.
  - lib/Watcher.go - Manages the process of watching for file changes, and runs restart routine.
- - lib/Server.go  - Manages the process of running the the actual target executable/project. 
+ - lib/Runner.go  - Manages the process of running the the actual target executable/project. 
  - lib/Config.go  - Helper to read in Config file.
  - lib/StatusWriter.go - A generic Writer which accepts a format string and will print a formatted output.
 
