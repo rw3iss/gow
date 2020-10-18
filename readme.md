@@ -4,6 +4,7 @@
 - Barebones (fast), cross-platform (uses fsnotify), recursive, and configurable.
 - Organized architecture, as an experimental project for practicing Go.
 
+![Alt text](https://i.imgur.com/vmpdbjk.png "Output")
 
 ## To install:
 ```
