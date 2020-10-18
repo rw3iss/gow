@@ -1,7 +1,7 @@
 ## What this is:
 
 - Go file watcher, builder, and runner. 
-- sBarebones (fast), cross-platform (uses fsnotify), recursive, and configurable.
+- Barebones (fast), cross-platform (uses fsnotify), recursive, and configurable.
 - Organized architecture, as an experimental project for practicing Go.
 
 
@@ -37,6 +37,8 @@ lib/                    - (Underlying application library)
         Colors.go       - Color definitions.
         FormatWriter.go - Generic Writer, accepts format string and prints output.
         Log.go          - Helper to print outputs.
+test/                   - (Test package, run 'gow' here and it will run test.go)
+    test.go             - Simple test program to print/test automatic changes.
 ```
 
  ## Todo

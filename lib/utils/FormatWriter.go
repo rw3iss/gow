@@ -1,9 +1,5 @@
 package utils
 
-import (
-	"io"
-)
-
 type FormatWriter struct {
 	formatString string
 }
@@ -13,7 +9,7 @@ func (w *FormatWriter) Write(b []byte) (int, error) {
 	return 0, nil
 }
 
-func NewFormatWriter(formatStr string) io.Writer {
+func NewFormatWriter(formatStr string) *FormatWriter {
 	return &FormatWriter{
 		formatString: formatStr,
 	}
