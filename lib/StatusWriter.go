@@ -5,16 +5,16 @@ import (
 )
 
 type StatusWriter struct {
-	FormatString string
+	formatString string
 }
 
 func (w *StatusWriter) Write(b []byte) (int, error) {
-	fmt.Printf(w.FormatString, b)
+	fmt.Printf(w.formatString, b)
 	return 0, nil
 }
 
 func NewWriter(formatStr string) interface{ Write(b []byte) (int, error) } {
 	return &StatusWriter{
-		FormatString: formatStr,
+		formatString: formatStr,
 	}
 }
