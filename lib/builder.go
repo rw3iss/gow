@@ -8,8 +8,18 @@ import (
 	"time"
 )
 
+type Builder struct {
+	app *Application
+}
+
+func NewBuilder(app *Application) *Builder {
+	return &Builder{
+		app: app,
+	}
+}
+
 // DoBuild - Executes the 'go build' command and records time.
-func DoBuild() error {
+func (b *Builder) Build() error {
 	start := time.Now()
 
 	cmd := exec.Command("go", "build")

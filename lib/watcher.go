@@ -3,30 +3,27 @@ package lib
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/rw3iss/gow/lib/utils"
 )
 
-var server *exec.Cmd
+type Watcher struct {
+	app *Application
+}
+
+//var server *exec.Cmd
 var changedFilename string
 
-func restartApp() {
-	fmt.Print(ColorYellow + "Rebuilding (" + changedFilename + ") ... " + ColorReset)
-
-	// Stop (we can stop in a separate thread)
-	StopServer(server)
-
-	// Rebuild
-	_ = DoBuild()
-
-	// Restart
-	server, _ = StartServer()
+func NewWatcher(app *Application) *Watcher {
+	return &Watcher{
+		app: app,
+	}
 }
 
 // StartWatcher - Starts the watching of the diretory and notifies iof changes
-func StartWatcher() {
+func (w *Watcher) Start() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -47,7 +44,7 @@ func StartWatcher() {
 				//log.Println("event:", event)
 				if event.Op&fsnotify.Write == fsnotify.Write {
 					changedFilename = event.Name
-					restartApp()
+					w.app.Restart()
 				}
 			case err, ok := <-watcher.Errors:
 				if !ok {
@@ -66,14 +63,16 @@ func StartWatcher() {
 		return
 	}
 
-	fmt.Printf("\n"+ColorNotice+"Watching: %s"+ColorReset+"\n", watchDir)
+	fmt.Printf("\n"+utils.ColorNotice+"Watching: %s"+utils.ColorReset+"\n", watchDir)
 
 	// start the command server
-	server, err = StartServer()
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
+	w.app.Server.Start()
+
+	// server, err = StartServer()
+	// if err != nil {
+	// 	fmt.Print(err)
+	// 	return
+	// }
 
 	<-done
 }

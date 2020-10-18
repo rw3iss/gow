@@ -5,19 +5,33 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/rw3iss/gow/lib/utils"
 )
 
 // Server handles managing the command which runs the underlying project's executable (ie. main module program).
 
-// StartServer - starts the Command server
-func StartServer() (*exec.Cmd, error) {
+type Server struct {
+	app *Application
+	cmd *exec.Cmd // underlying server context
+}
+
+func NewServer(app *Application) *Server {
+	return &Server{
+		app: app,
+	}
+}
+
+// Start - starts the Command server
+func (s *Server) Start() error {
 	cwd, err := os.Getwd()
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	// todo: get executable command from config, or use default executable/cwd
+	// Todo: get executable command from config, or use default executable/cwd
+	var _ = s.app.Config.Get("command", "")
 
 	mainExecutable := filepath.Base(cwd)
 	//fmt.Println("Starting... " + mainExecutable)
@@ -27,26 +41,28 @@ func StartServer() (*exec.Cmd, error) {
 	err = cmd.Start()
 
 	if err != nil {
-		fmt.Printf(ColorError+"Error starting command server: %s\n"+ColorReset, err)
-		return nil, err
+		fmt.Printf(utils.ColorError+"Error starting command server: %s\n"+utils.ColorReset, err)
+		return err
 	} else {
-		fmt.Print(ColorGreen + "Starting..." + ColorReset + "\n")
+		fmt.Print(utils.ColorGreen + "Starting..." + utils.ColorReset + "\n")
 	}
 
-	return cmd, nil
+	s.cmd = cmd
+
+	return nil
 }
 
-// StopServer - stops the Command server
-func StopServer(server *exec.Cmd) error {
+// Stop - stops the Command server
+func (s *Server) Stop() error {
 	//fmt.Println("Stopping.")
 	// Server already stopped?
-	if server == nil || server.Process == nil {
+	if s.cmd == nil || s.cmd.Process == nil {
 		return nil
 	}
 
 	// Send interrupt signal
 	// TODO: Sernding interrupt on windows is not implmeneted.
-	err := server.Process.Signal(os.Interrupt)
+	err := s.cmd.Process.Signal(os.Interrupt)
 
 	// todo: listen for external interrupts (ie. killed process)
 
@@ -65,5 +81,8 @@ func StopServer(server *exec.Cmd) error {
 	//time.Sleep(50 * time.Millisecond)
 
 	// Send kill signal
-	return server.Process.Kill()
+	r := s.cmd.Process.Kill()
+	s.cmd = nil
+
+	return r
 }

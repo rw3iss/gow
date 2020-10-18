@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strconv"
+
+	"github.com/rw3iss/gow/lib/utils"
 )
 
 type JsonMap map[string]interface{}
@@ -99,7 +101,7 @@ func (c *Config) GetVal(key string, def ...interface{}) interface{} {
 	case nil:
 		panic("Config value '" + key + "' does not exist, and no default was provided.")
 	default:
-		Log("Unknown type parsing config value '%s'. Value: %v, Type: %T", key, v, v)
+		utils.Log("Unknown type parsing config value '%s'. Value: %v, Type: %T", key, v, v)
 	}
 
 	return v

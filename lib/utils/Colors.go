@@ -1,4 +1,4 @@
-package lib
+package utils
 
 var ColorReset = "\033[0m"
 var ColorRed = "\033[1;31m"
