@@ -9,5 +9,5 @@ var app *lib.Application
 
 func main() {
 	app = lib.NewApplication()
-	app.Start()
+	app.Init()
 }

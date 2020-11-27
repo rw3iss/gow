@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/rw3iss/gow/lib/utils"
 )
@@ -12,7 +13,7 @@ import (
 type Runner struct {
 	app         *Application
 	cmd         *exec.Cmd // underlying server context
-	runCommand  []interface{}
+	runCommand  string
 	errorWriter *utils.FormatWriter
 }
 
@@ -21,7 +22,7 @@ func NewRunner(app *Application) *Runner {
 	if cwd, err := os.Getwd(); err == nil {
 		return &Runner{
 			app:         app,
-			runCommand:  app.Config.GetArray("runCommand", "./"+filepath.Base(cwd)),
+			runCommand:  app.Config.Get("runCommand", "./"+filepath.Base(cwd)),
 			errorWriter: utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset),
 		}
 	}
@@ -31,7 +32,7 @@ func NewRunner(app *Application) *Runner {
 
 // Start starts the Runner
 func (r *Runner) Start() error {
-	cmd := exec.Command(string(r.runCommand[0].(string)), string(r.runCommand[1].(string)))
+	cmd := exec.Command("go", strings.Split(r.runCommand, " ")...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = r.errorWriter
 
@@ -58,6 +59,7 @@ func (r *Runner) Stop() error {
 
 	// Send interrupt signal
 	// TODO: Sending interrupt on windows is not implmeneted.
+	utils.Log("Sending interrupt signal...")
 	err := r.cmd.Process.Signal(os.Interrupt)
 
 	// todo: listen for external interrupts (ie. killed process from somewhere else)

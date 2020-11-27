@@ -20,12 +20,12 @@ func NewWatcher(app *Application) *Watcher {
 
 // Start starts the watching of the diretory and notifies iof changes
 func (w *Watcher) Start() {
-	watcher, err := fsnotify.NewWatcher()
+	fileWatcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		utils.Log(err.Error())
 		return
 	}
-	defer watcher.Close()
+	defer fileWatcher.Close()
 
 	done := make(chan bool)
 
@@ -33,7 +33,7 @@ func (w *Watcher) Start() {
 	go func() {
 		for {
 			select {
-			case event, ok := <-watcher.Events:
+			case event, ok := <-fileWatcher.Events:
 				if !ok {
 					return
 				}
@@ -41,7 +41,7 @@ func (w *Watcher) Start() {
 				if event.Op&fsnotify.Write == fsnotify.Write {
 					w.app.Restart(event.Name)
 				}
-			case err, ok := <-watcher.Errors:
+			case err, ok := <-fileWatcher.Errors:
 				if !ok {
 					return
 				}
@@ -57,7 +57,7 @@ func (w *Watcher) Start() {
 		panic("\nConfigured watchDir directory does not exist: " + watchDir)
 	}
 
-	err = recurseWatchDirs(watcher, watchDir)
+	err = w._recurseWatchDirs(fileWatcher, watchDir)
 	if err != nil {
 		return
 	}
@@ -65,13 +65,13 @@ func (w *Watcher) Start() {
 	utils.Log("\n"+utils.ColorNotice+"Watching: %s"+utils.ColorReset+"\n", watchDir)
 
 	// start the target executable
-	w.app.Runner.Start()
+	w.app.Start()
 
 	<-done
 }
 
 // helpers to add all subdirectories to the watcher
-func recurseWatchDirs(watcher *fsnotify.Watcher, dir string) error {
+func (w *Watcher) _recurseWatchDirs(fileWatcher *fsnotify.Watcher, dir string) error {
 	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
@@ -79,7 +79,7 @@ func recurseWatchDirs(watcher *fsnotify.Watcher, dir string) error {
 				return err
 			}
 			if info.IsDir() {
-				watcher.Add(path)
+				fileWatcher.Add(path)
 			}
 			return nil
 		})

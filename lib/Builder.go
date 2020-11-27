@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/rw3iss/gow/lib/utils"
@@ -12,14 +13,14 @@ import (
 type Builder struct {
 	app          *Application
 	errorWriter  *utils.FormatWriter
-	buildCommand []interface{}
+	buildCommand string
 }
 
 func NewBuilder(app *Application) *Builder {
 	return &Builder{
 		app:          app,
-		errorWriter:  utils.NewFormatWriter(utils.ColorError + "Error:\n%s" + utils.ColorReset),
-		buildCommand: app.Config.GetArray("buildCommand", "build"),
+		errorWriter:  utils.NewFormatWriter(utils.ColorError + "Error:\n%s\n" + utils.ColorReset),
+		buildCommand: app.Config.Get("buildCommand", "build"),
 	}
 }
 
@@ -27,7 +28,7 @@ func NewBuilder(app *Application) *Builder {
 func (b *Builder) Build() error {
 	start := time.Now()
 
-	cmd := exec.Command(string(b.buildCommand[0].(string)), string(b.buildCommand[1].(string)))
+	cmd := exec.Command("go", strings.Split(b.buildCommand, " ")...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = b.errorWriter
 

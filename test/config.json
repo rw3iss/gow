@@ -5,8 +5,8 @@
 
     "restartOnError": true,
 
-    "buildCommand": ["go", "build"],
+    "buildCommand": "build",
 
-    "runCommand": ["go", "run test.go"]
+    "runCommand": "run test.go"
 
 }
